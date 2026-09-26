@@ -5,13 +5,13 @@ import { useAppContext } from "@/store/AppContext";
 
 // Map conditions to local video files in the /public folder
 const VIDEO_MAPPING: Record<string, string> = {
-  "clear-day": "/clouds.mp4", 
-  "clear-night": "/clouds.mp4",
-  "rain": "/clouds.mp4",
-  "clouds": "/clouds.mp4",
-  "storm": "/clouds.mp4",
-  "snow": "/clouds.mp4",
-  "mist": "/clouds.mp4"
+  "clear-day": "/clear_mrng.mp4", 
+  "clear-night": "/night.mp4",
+  "rain": "/rainy_mrng.mp4",
+  "clouds": "/cloudy_mrng.mp4",
+  "storm": "/storm.mp4",
+  "snow": "/cloudy_mrng.mp4", // Using clouds as fallback for snow
+  "mist": "/cloudy_mrng.mp4"  // Using clouds as fallback for mist
 };
 
 export default function WeatherVideoBackground() {
