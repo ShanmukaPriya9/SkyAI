@@ -87,8 +87,10 @@ export default function ProfilePage() {
             return;
           }
         }
+        setError("Invalid email or password.");
+      } else {
+        setError("Account not found on this device. Please 'Sign Up' first.");
       }
-      setError("Invalid email or password.");
     }
   };
 

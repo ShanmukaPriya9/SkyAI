@@ -24,7 +24,7 @@ export default function RootLayout({
           <WeatherVideoBackground />
           <div className="relative z-10 flex w-full min-h-screen">
             <Sidebar />
-            <main className="flex-1 overflow-y-auto p-4 md:p-8 lg:p-12">
+            <main className="flex-1 overflow-y-auto p-4 pb-24 md:p-8 md:pb-8 lg:p-12">
               {children}
             </main>
           </div>
