@@ -13,7 +13,8 @@ interface AppContextType {
   setAiMode: (val: string) => void;
   isLoggedIn: boolean;
   userEmail: string;
-  login: (email: string) => void;
+  userName: string;
+  login: (email: string, name?: string) => void;
   logout: () => void;
   temperatureUnit: string;
   setTemperatureUnit: (val: string) => void;
@@ -36,6 +37,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [aiMode, setAiMode] = useState("manual");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("Guest User");
   const [temperatureUnit, setTemperatureUnit] = useState("celsius");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [weatherCode, setWeatherCode] = useState(1000); // Default to clear
@@ -43,28 +45,36 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const token = localStorage.getItem("skyai_auth");
+    const storedName = localStorage.getItem("skyai_username");
     if (token) {
       setIsLoggedIn(true);
       setUserEmail(token);
+      if (storedName) setUserName(storedName);
     }
   }, []);
 
-  const login = (email: string) => {
+  const login = (email: string, name?: string) => {
     localStorage.setItem("skyai_auth", email);
+    if (name) {
+      localStorage.setItem("skyai_username", name);
+      setUserName(name);
+    }
     setIsLoggedIn(true);
     setUserEmail(email);
   };
 
   const logout = () => {
     localStorage.removeItem("skyai_auth");
+    localStorage.removeItem("skyai_username");
     setIsLoggedIn(false);
     setUserEmail("");
+    setUserName("Guest User");
   };
 
   const addMessage = (msg: { role: string; text: string }) => setMessages(prev => [...prev, msg]);
 
   return (
-    <AppContext.Provider value={{ messages, chatHistory, isTyping, addMessage, setChatHistory, setIsTyping, aiMode, setAiMode, isLoggedIn, userEmail, login, logout, temperatureUnit, setTemperatureUnit, notificationsEnabled, setNotificationsEnabled, weatherCode, setWeatherCode, isDay, setIsDay }}>
+    <AppContext.Provider value={{ messages, chatHistory, isTyping, addMessage, setChatHistory, setIsTyping, aiMode, setAiMode, isLoggedIn, userEmail, userName, login, logout, temperatureUnit, setTemperatureUnit, notificationsEnabled, setNotificationsEnabled, weatherCode, setWeatherCode, isDay, setIsDay }}>
       {children}
     </AppContext.Provider>
   );

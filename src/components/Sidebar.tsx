@@ -4,8 +4,11 @@ import { Cloud, Home, MessageSquare, Map as MapIcon, BarChart2, Settings, User }
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { useAppContext } from "@/store/AppContext";
+
 export default function Sidebar() {
   const pathname = usePathname();
+  const { userName } = useAppContext();
 
   return (
     <div className="hidden md:flex flex-col w-64 h-screen p-6 glass-panel border-r-white/10 z-10 sticky top-0 shrink-0">
@@ -22,7 +25,7 @@ export default function Sidebar() {
 
       <div className="mt-auto space-y-2 border-t border-white/10 pt-4">
         <NavItem href="/settings" icon={<Settings className="w-5 h-5" />} label="Settings" active={pathname === "/settings"} />
-        <NavItem href="/profile" icon={<User className="w-5 h-5" />} label="Guest Profile" active={pathname === "/profile"} />
+        <NavItem href="/profile" icon={<User className="w-5 h-5" />} label={userName === "Guest User" ? "Guest Profile" : userName} active={pathname === "/profile"} />
       </div>
     </div>
   );

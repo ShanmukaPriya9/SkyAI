@@ -5,14 +5,14 @@ import { User, MapPin, Save, ShieldCheck, Mail, LogOut, Key } from "lucide-react
 import { useAppContext } from "@/store/AppContext";
 
 export default function ProfilePage() {
-  const { isLoggedIn, login, logout, userEmail } = useAppContext();
+  const { isLoggedIn, login, logout, userEmail, userName } = useAppContext();
   const [location, setLocation] = useState("Warangal, IN");
-  const [name, setName] = useState("Guest User");
 
   // Auth Form State
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [signUpName, setSignUpName] = useState("");
   const [error, setError] = useState("");
 
   // Clear fields when logging out
@@ -20,13 +20,14 @@ export default function ProfilePage() {
     if (!isLoggedIn) {
       setEmail("");
       setPassword("");
+      setSignUpName("");
       setError("");
     }
   }, [isLoggedIn]);
 
   const handleAuth = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password) {
+    if (!email || !password || (authMode === "signup" && !signUpName)) {
       setError("Please fill out all fields.");
       return;
     }
@@ -41,15 +42,26 @@ export default function ProfilePage() {
         setError("An account already exists with this email. Please log in.");
         return;
       }
-      localStorage.setItem(`db_${email}`, password);
-      login(email);
+      localStorage.setItem(`db_${email}`, JSON.stringify({ password, name: signUpName }));
+      login(email, signUpName);
     } else {
-      const storedPass = localStorage.getItem(`db_${email}`);
-      if (storedPass === password) {
-        login(email);
-      } else {
-        setError("Invalid email or password.");
+      const accountData = localStorage.getItem(`db_${email}`);
+      if (accountData) {
+        try {
+          const parsed = JSON.parse(accountData);
+          if (parsed.password === password) {
+            login(email, parsed.name);
+            return;
+          }
+        } catch(e) {
+          // Fallback for old un-stringified passwords
+          if (accountData === password) {
+            login(email, email.split("@")[0]);
+            return;
+          }
+        }
       }
+      setError("Invalid email or password.");
     }
   };
 
@@ -79,6 +91,22 @@ export default function ProfilePage() {
                  {error}
                </div>
             </div>
+
+            {authMode === "signup" && (
+              <div>
+                <label htmlFor="name" className="text-xs text-gray-400 font-medium ml-1">Full Name</label>
+                <input 
+                  id="name"
+                  name="name"
+                  type="text" 
+                  value={signUpName}
+                  autoComplete="name"
+                  onChange={(e) => setSignUpName(e.target.value)}
+                  className="w-full mt-1 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500/50 focus:bg-black/60 transition-all"
+                  placeholder="John Doe"
+                />
+              </div>
+            )}
             
             <div>
               <label htmlFor="email" className="text-xs text-gray-400 font-medium ml-1">Email Address</label>
@@ -142,9 +170,9 @@ export default function ProfilePage() {
           <h1 className="text-3xl font-bold text-white tracking-wide mb-1">
             <input 
               type="text" 
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              className="bg-transparent border-b border-transparent focus:border-blue-400 hover:border-white/20 focus:outline-none text-center transition-colors" 
+              value={userName}
+              readOnly
+              className="bg-transparent border-b border-transparent focus:outline-none text-center transition-colors cursor-default" 
             />
           </h1>
           <p className="text-blue-400 font-medium flex items-center justify-center gap-2">
