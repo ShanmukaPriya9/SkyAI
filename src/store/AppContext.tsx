@@ -19,6 +19,10 @@ interface AppContextType {
   setTemperatureUnit: (val: string) => void;
   notificationsEnabled: boolean;
   setNotificationsEnabled: (val: boolean) => void;
+  weatherCode: number;
+  setWeatherCode: (val: number) => void;
+  isDay: number;
+  setIsDay: (val: number) => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -34,6 +38,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const [userEmail, setUserEmail] = useState("");
   const [temperatureUnit, setTemperatureUnit] = useState("celsius");
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const [weatherCode, setWeatherCode] = useState(1000); // Default to clear
+  const [isDay, setIsDay] = useState(1); // Default to day
 
   useEffect(() => {
     const token = localStorage.getItem("skyai_auth");
@@ -58,7 +64,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const addMessage = (msg: { role: string; text: string }) => setMessages(prev => [...prev, msg]);
 
   return (
-    <AppContext.Provider value={{ messages, chatHistory, isTyping, addMessage, setChatHistory, setIsTyping, aiMode, setAiMode, isLoggedIn, userEmail, login, logout, temperatureUnit, setTemperatureUnit, notificationsEnabled, setNotificationsEnabled }}>
+    <AppContext.Provider value={{ messages, chatHistory, isTyping, addMessage, setChatHistory, setIsTyping, aiMode, setAiMode, isLoggedIn, userEmail, login, logout, temperatureUnit, setTemperatureUnit, notificationsEnabled, setNotificationsEnabled, weatherCode, setWeatherCode, isDay, setIsDay }}>
       {children}
     </AppContext.Provider>
   );

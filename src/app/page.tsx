@@ -8,7 +8,7 @@ export default function Home() {
   const [prompt, setPrompt] = useState("");
   
   // Use global chat state
-  const { messages, chatHistory, isTyping, addMessage, setChatHistory, setIsTyping, aiMode, isLoggedIn, temperatureUnit } = useAppContext();
+  const { messages, chatHistory, isTyping, addMessage, setChatHistory, setIsTyping, aiMode, isLoggedIn, temperatureUnit, setWeatherCode, setIsDay } = useAppContext();
   
   // Real weather state
   const [weatherData, setWeatherData] = useState<any>(null);
@@ -76,6 +76,13 @@ export default function Home() {
       .then(res => res.json())
       .then(data => {
         setWeatherData(data);
+        
+        // Update global background video
+        if (data && data.current && data.current.condition) {
+          setWeatherCode(data.current.condition.code);
+          setIsDay(data.current.is_day);
+        }
+
         // Only override the display name if we are not doing a coordinate search 
         // (because coordinate searches have their display name set by the precise OSM reverse-geocoder above)
         if (!searchLocation.includes(",")) {
