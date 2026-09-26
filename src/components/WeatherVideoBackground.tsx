@@ -26,23 +26,41 @@ export default function WeatherVideoBackground() {
     let key = "clear-day";
     
     if (weatherCode) {
-      if ([1000].includes(weatherCode)) {
-        key = isDay === 0 ? "clear-night" : "clear-day";
-      } else if ([1003, 1006, 1009].includes(weatherCode)) {
-        key = "partly-cloudy";
-      } else if ([1030, 1135, 1148].includes(weatherCode)) {
-        key = "fog";
-      } else if ([1063, 1180, 1186, 1189, 1240].includes(weatherCode)) {
-        key = isDay === 0 ? "rain-night" : "light-rain";
-      } else if ([1183, 1192, 1195, 1243].includes(weatherCode)) {
-        key = isDay === 0 ? "rain-night" : "heavy-rain";
-      } else if ([1087, 1273, 1276, 1279, 1282].includes(weatherCode)) {
-        key = "thunderstorm";
-      } else if ([1066, 1114, 1210, 1213, 1219, 1222, 1225].includes(weatherCode)) {
-        key = "snow";
-      } else if (weatherCode === 1117 || weatherCode === 1225) { 
-        // Blizzard/extreme conditions mapped to cyclone (approx)
-        key = "cyclone";
+      if (isDay === 0) {
+        // STRICT NIGHT LOGIC
+        // If it's night, we must NEVER use a _mrng or day video.
+        // We only have clear_night.mp4 and rainy_night.mp4 for night times.
+        const isRainingOrStorming = [
+          1063, 1180, 1183, 1186, 1189, 1192, 1195, 1240, 1243, // Rain
+          1087, 1273, 1276, 1279, 1282,                         // Storms
+          1117, 1225                                            // Cyclone/Blizzard
+        ].includes(weatherCode);
+
+        if (isRainingOrStorming) {
+          key = "rain-night";
+        } else {
+          // For Clear, Clouds, Fog, and anything else at night without rain
+          key = "clear-night";
+        }
+      } else {
+        // DAYTIME LOGIC
+        if ([1000].includes(weatherCode)) {
+          key = "clear-day";
+        } else if ([1003, 1006, 1009].includes(weatherCode)) {
+          key = "partly-cloudy";
+        } else if ([1030, 1135, 1148].includes(weatherCode)) {
+          key = "fog";
+        } else if ([1063, 1180, 1186, 1189, 1240].includes(weatherCode)) {
+          key = "light-rain";
+        } else if ([1183, 1192, 1195, 1243].includes(weatherCode)) {
+          key = "heavy-rain";
+        } else if ([1087, 1273, 1276, 1279, 1282].includes(weatherCode)) {
+          key = "thunderstorm";
+        } else if ([1066, 1114, 1210, 1213, 1219, 1222, 1225].includes(weatherCode)) {
+          key = "snow";
+        } else if (weatherCode === 1117 || weatherCode === 1225) { 
+          key = "cyclone";
+        }
       }
     }
     
