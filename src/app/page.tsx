@@ -292,7 +292,7 @@ export default function Home() {
           
           {/* Hourly Forecast */}
           <div className="lg:col-span-2 glass-panel rounded-3xl p-6 md:p-8 overflow-hidden">
-            <h3 className="text-lg font-semibold mb-6 text-white tracking-wide">Today's Forecast</h3>
+            <h3 className="text-lg font-semibold mb-6 text-white tracking-wide">Today&apos;s Forecast</h3>
             <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
               {weatherData.forecast.forecastday[0].hour.filter((_: any, i: number) => i % 2 === 0).map((hour: any, i: number) => (
                 <div key={i} className="flex flex-col items-center min-w-[90px] p-4 rounded-2xl bg-black/20 border border-white/5 hover:bg-white/5 transition-colors cursor-pointer">

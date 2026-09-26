@@ -1,6 +1,6 @@
 "use client";
 
-import { Cloud, Home, MessageSquare, Map as MapIcon, BarChart2, Settings, User } from "lucide-react";
+import { Cloud, Home, Map as MapIcon, BarChart2, Settings, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
