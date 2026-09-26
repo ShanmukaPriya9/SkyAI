@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, MapPin, Wind, Droplets, Sun, AlertTriangle, Cloud, Navigation2, Loader2, Send, X, Lock } from "lucide-react";
+import { Search, MapPin, Wind, Droplets, Sun, AlertTriangle, Cloud, Navigation2, Loader2, Send, X, Lock, Sunrise, Sunset, Moon } from "lucide-react";
 import { useAppContext } from "@/store/AppContext";
 
 export default function Home() {
@@ -306,6 +306,30 @@ export default function Home() {
                   </span>
                 </div>
               ))}
+            </div>
+
+            {/* Daily Astro & Conditions Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-white/10">
+              <MetricCard 
+                icon={<Sunrise className="w-5 h-5" />} 
+                label="Sunrise" 
+                value={weatherData.forecast.forecastday[0].astro.sunrise} 
+              />
+              <MetricCard 
+                icon={<Sunset className="w-5 h-5" />} 
+                label="Sunset" 
+                value={weatherData.forecast.forecastday[0].astro.sunset} 
+              />
+              <MetricCard 
+                icon={<Moon className="w-5 h-5" />} 
+                label="Moon Phase" 
+                value={weatherData.forecast.forecastday[0].astro.moon_phase} 
+              />
+              <MetricCard 
+                icon={<Sun className="w-5 h-5" />} 
+                label="Max UV Index" 
+                value={weatherData.forecast.forecastday[0].day.uv} 
+              />
             </div>
           </div>
 
