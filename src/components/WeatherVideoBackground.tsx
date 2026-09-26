@@ -1,22 +1,23 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useAppContext } from "@/store/AppContext";
 
-// YouTube Video IDs for different weather conditions
+// Map conditions to local video files in the /public folder
 const VIDEO_MAPPING: Record<string, string> = {
-  "clear-day": "5Mxg-1hF1C8", // Blue sky
-  "clear-night": "AWKzriOtiE8", // Starry night
-  "rain": "mPZkdNFkNps", // Rain
-  "clouds": "rQ5_2w2G3O8", // Cloudy sky
-  "storm": "fBtzv9D8fM4", // Thunderstorm
-  "snow": "BwwxO1bLIf4", // Snow
-  "mist": "15v1oH17T2c" // Fog
+  "clear-day": "/clouds.mp4", 
+  "clear-night": "/clouds.mp4",
+  "rain": "/clouds.mp4",
+  "clouds": "/clouds.mp4",
+  "storm": "/clouds.mp4",
+  "snow": "/clouds.mp4",
+  "mist": "/clouds.mp4"
 };
 
 export default function WeatherVideoBackground() {
   const { weatherCode, isDay } = useAppContext();
-  const [videoId, setVideoId] = useState(VIDEO_MAPPING["clear-day"]);
+  const [videoSrc, setVideoSrc] = useState(VIDEO_MAPPING["clear-day"]);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     let key = "clear-day";
@@ -37,19 +38,22 @@ export default function WeatherVideoBackground() {
       }
     }
     
-    setVideoId(VIDEO_MAPPING[key] || VIDEO_MAPPING["clear-day"]);
+    setVideoSrc(VIDEO_MAPPING[key] || VIDEO_MAPPING["clear-day"]);
   }, [weatherCode, isDay]);
 
   return (
     <div className="fixed inset-0 z-0 overflow-hidden bg-blue-900 pointer-events-none">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300vw] h-[300vh] lg:w-[150vw] lg:h-[150vh]">
-        <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&modestbranding=1&showinfo=0&rel=0&iv_load_policy=3`}
-          allow="autoplay"
-          className="w-full h-full object-cover opacity-80"
-          frameBorder="0"
-        />
-      </div>
+      <video
+        ref={videoRef}
+        key={videoSrc}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="w-full h-full object-cover opacity-80"
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
       <div className="absolute inset-0 bg-black/50" />
     </div>
   );
