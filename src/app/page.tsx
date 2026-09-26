@@ -373,21 +373,35 @@ export default function Home() {
             <div className="absolute top-0 right-0 w-32 h-32 bg-green-500/10 rounded-bl-full -z-10 transition-transform group-hover:scale-110" />
             <h3 className="text-lg font-semibold mb-2 text-white tracking-wide">Air Quality</h3>
             {weatherData.current.air_quality ? (
-              <>
-                <div className="flex-1 flex flex-col justify-center my-4">
-                  <div className="text-6xl font-black tracking-tighter text-white mb-2">
-                    {weatherData.current.air_quality["us-epa-index"]}
-                  </div>
-                  <span className="text-xl font-medium text-green-400">
-                    {["", "Good", "Moderate", "Unhealthy for Sensitive Groups", "Unhealthy", "Very Unhealthy", "Hazardous"][weatherData.current.air_quality["us-epa-index"]] || "Unknown"}
-                  </span>
-                </div>
-                <div className="grid grid-cols-3 gap-2 border-t border-white/10 pt-4 mt-auto">
-                   <div className="flex flex-col"><span className="text-xs text-gray-500">PM2.5</span><span className="text-sm text-gray-200 font-medium">{Math.round(weatherData.current.air_quality.pm2_5)}</span></div>
-                   <div className="flex flex-col"><span className="text-xs text-gray-500">PM10</span><span className="text-sm text-gray-200 font-medium">{Math.round(weatherData.current.air_quality.pm10)}</span></div>
-                   <div className="flex flex-col"><span className="text-xs text-gray-500">O3</span><span className="text-sm text-gray-200 font-medium">{Math.round(weatherData.current.air_quality.o3)}</span></div>
-                </div>
-              </>
+              (() => {
+                // Calculate US AQI from PM2.5
+                const c = weatherData.current.air_quality.pm2_5;
+                let aqi = 0;
+                if (c <= 12.0) aqi = Math.round((50 / 12.0) * c);
+                else if (c <= 35.4) aqi = Math.round(((49 / 23.3) * (c - 12.1)) + 51);
+                else if (c <= 55.4) aqi = Math.round(((49 / 19.9) * (c - 35.5)) + 101);
+                else if (c <= 150.4) aqi = Math.round(((49 / 94.9) * (c - 55.5)) + 151);
+                else if (c <= 250.4) aqi = Math.round(((99 / 99.9) * (c - 150.5)) + 201);
+                else aqi = Math.round(((199 / 249.9) * (c - 250.5)) + 301);
+
+                return (
+                  <>
+                    <div className="flex-1 flex flex-col justify-center my-4">
+                      <div className="text-6xl font-black tracking-tighter text-white mb-2">
+                        {aqi}
+                      </div>
+                      <span className="text-xl font-medium text-green-400">
+                        {["", "Good", "Moderate", "Unhealthy for Sensitive Groups", "Unhealthy", "Very Unhealthy", "Hazardous"][weatherData.current.air_quality["us-epa-index"]] || "Unknown"}
+                      </span>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 border-t border-white/10 pt-4 mt-auto">
+                       <div className="flex flex-col"><span className="text-xs text-gray-500">PM2.5</span><span className="text-sm text-gray-200 font-medium">{Math.round(weatherData.current.air_quality.pm2_5)}</span></div>
+                       <div className="flex flex-col"><span className="text-xs text-gray-500">PM10</span><span className="text-sm text-gray-200 font-medium">{Math.round(weatherData.current.air_quality.pm10)}</span></div>
+                       <div className="flex flex-col"><span className="text-xs text-gray-500">O3</span><span className="text-sm text-gray-200 font-medium">{Math.round(weatherData.current.air_quality.o3)}</span></div>
+                    </div>
+                  </>
+                );
+              })()
             ) : (
               <p className="text-sm text-gray-400 mt-4">Air quality data unavailable for this region.</p>
             )}
