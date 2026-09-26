@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, MapPin, Wind, Droplets, Sun, AlertTriangle, Cloud, Navigation2, Loader2, Send, X, Lock, Sunrise, Sunset, Moon } from "lucide-react";
+import { Search, MapPin, Wind, Droplets, Sun, AlertTriangle, Cloud, Navigation2, Loader2, Send, X, Lock, Sunrise, Sunset, Moon, CloudRain, Snowflake } from "lucide-react";
 import { useAppContext } from "@/store/AppContext";
 
 export default function Home() {
@@ -311,24 +311,24 @@ export default function Home() {
             {/* Daily Astro & Conditions Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-white/10">
               <WeatherMetric 
-                icon={<Sunrise className="w-5 h-5" />} 
-                label="Sunrise" 
-                value={weatherData.forecast.forecastday[0].astro.sunrise} 
+                icon={<CloudRain className="w-5 h-5" />} 
+                label="Rain Chance" 
+                value={`${weatherData.forecast.forecastday[0].day.daily_chance_of_rain}%`} 
               />
               <WeatherMetric 
-                icon={<Sunset className="w-5 h-5" />} 
-                label="Sunset" 
-                value={weatherData.forecast.forecastday[0].astro.sunset} 
+                icon={<Snowflake className="w-5 h-5" />} 
+                label="Snow Chance" 
+                value={`${weatherData.forecast.forecastday[0].day.daily_chance_of_snow}%`} 
+              />
+              <WeatherMetric 
+                icon={<Droplets className="w-5 h-5" />} 
+                label="Total Rainfall" 
+                value={temperatureUnit === 'fahrenheit' ? `${weatherData.forecast.forecastday[0].day.totalprecip_in} in` : `${weatherData.forecast.forecastday[0].day.totalprecip_mm} mm`} 
               />
               <WeatherMetric 
                 icon={<Moon className="w-5 h-5" />} 
                 label="Moon Phase" 
                 value={weatherData.forecast.forecastday[0].astro.moon_phase} 
-              />
-              <WeatherMetric 
-                icon={<Sun className="w-5 h-5" />} 
-                label="Max UV Index" 
-                value={weatherData.forecast.forecastday[0].day.uv.toString()} 
               />
             </div>
           </div>
