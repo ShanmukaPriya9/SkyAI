@@ -310,25 +310,25 @@ export default function Home() {
 
             {/* Daily Astro & Conditions Grid */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8 pt-6 border-t border-white/10">
-              <MetricCard 
+              <WeatherMetric 
                 icon={<Sunrise className="w-5 h-5" />} 
                 label="Sunrise" 
                 value={weatherData.forecast.forecastday[0].astro.sunrise} 
               />
-              <MetricCard 
+              <WeatherMetric 
                 icon={<Sunset className="w-5 h-5" />} 
                 label="Sunset" 
                 value={weatherData.forecast.forecastday[0].astro.sunset} 
               />
-              <MetricCard 
+              <WeatherMetric 
                 icon={<Moon className="w-5 h-5" />} 
                 label="Moon Phase" 
                 value={weatherData.forecast.forecastday[0].astro.moon_phase} 
               />
-              <MetricCard 
+              <WeatherMetric 
                 icon={<Sun className="w-5 h-5" />} 
                 label="Max UV Index" 
-                value={weatherData.forecast.forecastday[0].day.uv} 
+                value={weatherData.forecast.forecastday[0].day.uv.toString()} 
               />
             </div>
           </div>
