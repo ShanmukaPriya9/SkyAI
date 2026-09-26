@@ -5,13 +5,16 @@ import { useAppContext } from "@/store/AppContext";
 
 // Map conditions to local video files in the /public folder
 const VIDEO_MAPPING: Record<string, string> = {
-  "clear-day": "/clear_mrng.mp4", 
-  "clear-night": "/night.mp4",
-  "rain": "/rainy_mrng.mp4",
-  "clouds": "/cloudy_mrng.mp4",
-  "storm": "/storm.mp4",
-  "snow": "/cloudy_mrng.mp4", // Using clouds as fallback for snow
-  "mist": "/cloudy_mrng.mp4"  // Using clouds as fallback for mist
+  "clear-day": "/sunny_day.mp4", 
+  "clear-night": "/clear_night.mp4",
+  "partly-cloudy": "/partly_cloudy_mrng.mp4",
+  "light-rain": "/light_rainy_mrng.mp4",
+  "heavy-rain": "/heavy_rain.mp4",
+  "rain-night": "/rainy_night.mp4",
+  "thunderstorm": "/thunderstorm.mp4",
+  "cyclone": "/cyclone.mp4",
+  "snow": "/snow.mp4",
+  "fog": "/fog.mp4"
 };
 
 export default function WeatherVideoBackground() {
@@ -26,15 +29,20 @@ export default function WeatherVideoBackground() {
       if ([1000].includes(weatherCode)) {
         key = isDay === 0 ? "clear-night" : "clear-day";
       } else if ([1003, 1006, 1009].includes(weatherCode)) {
-        key = "clouds";
+        key = "partly-cloudy";
       } else if ([1030, 1135, 1148].includes(weatherCode)) {
-        key = "mist";
-      } else if ([1063, 1180, 1183, 1186, 1189, 1192, 1195, 1240, 1243].includes(weatherCode)) {
-        key = "rain";
+        key = "fog";
+      } else if ([1063, 1180, 1186, 1189, 1240].includes(weatherCode)) {
+        key = isDay === 0 ? "rain-night" : "light-rain";
+      } else if ([1183, 1192, 1195, 1243].includes(weatherCode)) {
+        key = isDay === 0 ? "rain-night" : "heavy-rain";
       } else if ([1087, 1273, 1276, 1279, 1282].includes(weatherCode)) {
-        key = "storm";
+        key = "thunderstorm";
       } else if ([1066, 1114, 1210, 1213, 1219, 1222, 1225].includes(weatherCode)) {
         key = "snow";
+      } else if (weatherCode === 1117 || weatherCode === 1225) { 
+        // Blizzard/extreme conditions mapped to cyclone (approx)
+        key = "cyclone";
       }
     }
     
