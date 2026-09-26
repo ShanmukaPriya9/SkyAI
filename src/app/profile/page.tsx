@@ -6,7 +6,44 @@ import { useAppContext } from "@/store/AppContext";
 
 export default function ProfilePage() {
   const { isLoggedIn, login, logout, userEmail, userName } = useAppContext();
-  const [location, setLocation] = useState("Warangal, IN");
+  const [location, setLocation] = useState("Detecting...");
+
+  useEffect(() => {
+    const savedLocation = localStorage.getItem("skyai_home_location");
+    if (savedLocation) {
+      setLocation(savedLocation);
+    } else {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            try {
+              const { latitude, longitude } = position.coords;
+              const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+              const data = await res.json();
+              if (data && data.address) {
+                const city = data.address.city || data.address.town || data.address.village || data.address.county || "";
+                const state = data.address.state || data.address.country || "";
+                const formattedLocation = `${city}${city && state ? ', ' : ''}${state}`;
+                setLocation(formattedLocation || "New York");
+              } else {
+                setLocation("New York");
+              }
+            } catch (err) {
+              setLocation("New York");
+            }
+          },
+          () => setLocation("New York")
+        );
+      } else {
+        setLocation("New York");
+      }
+    }
+  }, []);
+
+  const saveSettings = () => {
+    localStorage.setItem("skyai_home_location", location);
+    alert("Settings saved successfully!");
+  };
 
   // Auth Form State
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
@@ -221,7 +258,7 @@ export default function ProfilePage() {
            <button onClick={logout} className="text-red-400 hover:text-red-300 text-sm font-medium flex items-center gap-2 transition-colors">
              <LogOut className="w-4 h-4" /> Sign Out
            </button>
-           <button className="bg-blue-600 hover:bg-blue-500 transition-colors px-6 py-2.5 rounded-xl text-white font-medium flex items-center gap-2 shadow-lg shadow-blue-500/20">
+           <button onClick={saveSettings} className="bg-blue-600 hover:bg-blue-500 transition-colors px-6 py-2.5 rounded-xl text-white font-medium flex items-center gap-2 shadow-lg shadow-blue-500/20">
              <Save className="w-4 h-4" /> Save Changes
            </button>
         </div>
