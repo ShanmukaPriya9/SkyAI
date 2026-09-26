@@ -40,11 +40,6 @@ export default function ProfilePage() {
     }
   }, []);
 
-  const saveSettings = () => {
-    localStorage.setItem("skyai_home_location", location);
-    alert("Settings saved successfully!");
-  };
-
   // Auth Form State
   const [authMode, setAuthMode] = useState<"login" | "signup">("login");
   const [email, setEmail] = useState("");
@@ -235,8 +230,8 @@ export default function ProfilePage() {
             <input 
               type="text" 
               value={location}
-              onChange={(e) => setLocation(e.target.value)}
-              className="bg-black/40 border border-white/10 rounded-xl px-4 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-blue-500" 
+              readOnly
+              className="bg-transparent border border-white/5 rounded-xl px-4 py-2 text-sm text-gray-300 focus:outline-none cursor-default" 
             />
           </div>
 
@@ -254,12 +249,9 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t border-white/10 flex justify-between items-center">
-           <button onClick={logout} className="text-red-400 hover:text-red-300 text-sm font-medium flex items-center gap-2 transition-colors">
+        <div className="mt-8 pt-8 border-t border-white/10 flex justify-end items-center">
+           <button onClick={logout} className="bg-black/20 border border-red-500/30 text-red-400 hover:bg-red-500/10 hover:border-red-500/50 text-sm font-medium flex items-center gap-2 transition-colors px-6 py-2.5 rounded-xl">
              <LogOut className="w-4 h-4" /> Sign Out
-           </button>
-           <button onClick={saveSettings} className="bg-blue-600 hover:bg-blue-500 transition-colors px-6 py-2.5 rounded-xl text-white font-medium flex items-center gap-2 shadow-lg shadow-blue-500/20">
-             <Save className="w-4 h-4" /> Save Changes
            </button>
         </div>
       </div>
