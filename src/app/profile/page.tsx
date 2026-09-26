@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { User, MapPin, Save, ShieldCheck, Mail, LogOut, Key } from "lucide-react";
+import { User, MapPin, ShieldCheck, Mail, LogOut, Key } from "lucide-react";
 import { useAppContext } from "@/store/AppContext";
 
 export default function ProfilePage() {

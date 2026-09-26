@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, MapPin, Wind, Droplets, Sun, AlertTriangle, Cloud, Navigation2, Loader2, Send, X, Lock, Sunrise, Sunset, Moon, CloudRain, Snowflake } from "lucide-react";
+import { Search, MapPin, Wind, Droplets, Sun, AlertTriangle, Cloud, Navigation2, Loader2, Send, X, Lock, Moon, CloudRain, Snowflake } from "lucide-react";
 import { useAppContext } from "@/store/AppContext";
 
 export default function Home() {
