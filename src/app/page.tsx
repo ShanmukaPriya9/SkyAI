@@ -133,12 +133,12 @@ export default function Home() {
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-1000 slide-in-from-bottom-4 mb-20">
-      <header className="relative z-50 flex justify-between items-center glass-panel rounded-3xl p-4 px-6 md:px-8">
+      <header className="relative z-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0 glass-panel rounded-3xl p-4 px-6 md:px-8">
         <div className="flex items-center gap-3 text-gray-200">
-          <MapPin className="w-5 h-5 text-blue-400 animate-pulse" />
-          <span className="font-medium text-lg tracking-wide">{weatherData ? displayLocationName : 'Loading...'}</span>
+          <MapPin className="w-5 h-5 text-blue-400 animate-pulse shrink-0" />
+          <span className="font-medium text-lg tracking-wide truncate max-w-[200px] md:max-w-none">{weatherData ? displayLocationName : 'Loading...'}</span>
         </div>
-        <div className="relative w-72 hidden md:block z-50">
+        <div className="relative w-full md:w-72 z-50">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input 
             type="text" 
