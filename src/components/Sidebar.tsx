@@ -49,6 +49,7 @@ function MobileNavItem({ href, icon, active = false }: { href: string, icon: Rea
       {icon}
     </Link>
   );
+}
 
 function NavItem({ href, icon, label, active = false }: { href: string, icon: React.ReactNode, label: string, active?: boolean }) {
   return (
