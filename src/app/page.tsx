@@ -75,6 +75,10 @@ export default function Home() {
     fetch(`/api/weather?location=${searchLocation}`)
       .then(res => res.json())
       .then(data => {
+        if (data.error || !data.current) {
+          console.error("Location not found:", data.error);
+          return;
+        }
         setWeatherData(data);
         
         // Update global background video
