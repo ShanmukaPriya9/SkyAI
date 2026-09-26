@@ -205,10 +205,10 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-12 relative z-10">
-            <WeatherMetric icon={<Wind />} label="Wind" value={weatherData?.current ? `${weatherData.current.wind_kph} km/h` : '-'} />
+            <WeatherMetric icon={<Wind />} label="Wind" value={weatherData?.current ? (temperatureUnit === 'fahrenheit' ? `${weatherData.current.wind_mph} mph` : `${weatherData.current.wind_kph} km/h`) : '-'} />
             <WeatherMetric icon={<Droplets />} label="Humidity" value={weatherData?.current ? `${weatherData.current.humidity}%` : '-'} />
             <WeatherMetric icon={<Sun />} label="UV Index" value={weatherData?.current ? weatherData.current.uv : '-'} />
-            <WeatherMetric icon={<Navigation2 />} label="Pressure" value={weatherData?.current ? `${weatherData.current.pressure_mb} hPa` : '-'} />
+            <WeatherMetric icon={<Navigation2 />} label="Pressure" value={weatherData?.current ? (temperatureUnit === 'fahrenheit' ? `${weatherData.current.pressure_in} inHg` : `${weatherData.current.pressure_mb} hPa`) : '-'} />
           </div>
         </div>
 
