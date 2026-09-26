@@ -9,34 +9,29 @@ export default function ProfilePage() {
   const [location, setLocation] = useState("Detecting...");
 
   useEffect(() => {
-    const savedLocation = localStorage.getItem("skyai_home_location");
-    if (savedLocation) {
-      setLocation(savedLocation);
-    } else {
-      if ("geolocation" in navigator) {
-        navigator.geolocation.getCurrentPosition(
-          async (position) => {
-            try {
-              const { latitude, longitude } = position.coords;
-              const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-              const data = await res.json();
-              if (data && data.address) {
-                const city = data.address.city || data.address.town || data.address.village || data.address.county || "";
-                const state = data.address.state || data.address.country || "";
-                const formattedLocation = `${city}${city && state ? ', ' : ''}${state}`;
-                setLocation(formattedLocation || "New York");
-              } else {
-                setLocation("New York");
-              }
-            } catch (err) {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          try {
+            const { latitude, longitude } = position.coords;
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+            const data = await res.json();
+            if (data && data.address) {
+              const city = data.address.city || data.address.town || data.address.village || data.address.county || "";
+              const state = data.address.state || data.address.country || "";
+              const formattedLocation = `${city}${city && state ? ', ' : ''}${state}`;
+              setLocation(formattedLocation || "New York");
+            } else {
               setLocation("New York");
             }
-          },
-          () => setLocation("New York")
-        );
-      } else {
-        setLocation("New York");
-      }
+          } catch (err) {
+            setLocation("New York");
+          }
+        },
+        () => setLocation("New York")
+      );
+    } else {
+      setLocation("New York");
     }
   }, []);
 
