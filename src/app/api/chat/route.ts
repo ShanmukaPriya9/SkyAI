@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenerativeAI, SchemaType, FunctionDeclaration } from "@google/generative-ai";
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const WEATHER_API_KEY = process.env.WEATHER_API_KEY;
@@ -12,14 +12,14 @@ if (!GEMINI_API_KEY) {
 const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
 
 // Define the tool for Gemini to call
-const weatherTool = {
+const weatherTool: FunctionDeclaration = {
   name: "get_weather",
   description: "Fetches current weather and forecast for a given location",
   parameters: {
-    type: "object",
+    type: SchemaType.OBJECT,
     properties: {
       location: {
-        type: "string",
+        type: SchemaType.STRING,
         description: "The city and state/country, e.g., 'San Francisco, CA'",
       },
     },
