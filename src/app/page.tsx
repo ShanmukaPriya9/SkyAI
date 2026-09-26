@@ -85,7 +85,7 @@ export default function Home() {
 
         // Only override the display name if we are not doing a coordinate search 
         // (because coordinate searches have their display name set by the precise OSM reverse-geocoder above)
-        if (!searchLocation.includes(",")) {
+        if (data && data.location && !searchLocation.includes(",")) {
           setDisplayLocationName(`${data.location.name}, ${data.location.region}`);
         }
       })
