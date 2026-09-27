@@ -30,7 +30,7 @@ export default function Home() {
 
           // Reverse geocode with OpenStreetMap for hyper-local naming
           try {
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`);
             const data = await res.json();
             if (data && data.address) {
               const localName = data.address.suburb || data.address.neighbourhood || data.address.city_district || data.address.city || data.address.town || data.name;

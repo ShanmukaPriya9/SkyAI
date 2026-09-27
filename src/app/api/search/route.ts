@@ -8,7 +8,7 @@ export async function GET(request: Request) {
 
   try {
     // Using OpenStreetMap Nominatim for hyper-local searching (neighborhoods, villages, streets)
-    const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5`, {
+    const response = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=5&accept-language=en`, {
       headers: {
         "User-Agent": "SkyAI-WeatherApp/1.0"
       }
