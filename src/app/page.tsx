@@ -38,18 +38,6 @@ export default function Home() {
           setLocationError("");
           const { latitude, longitude } = position.coords;
           setSearchLocation(`${latitude},${longitude}`);
-
-          // Reverse geocode with OpenStreetMap for hyper-local naming
-          try {
-            const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`);
-            const data = await res.json();
-            if (data && data.address) {
-              const localName = data.address.city || data.address.town || data.address.village || data.address.municipality || data.address.suburb || data.address.city_district || data.name;
-              setDisplayLocationName(`${localName}, ${data.address.state || data.address.country}`);
-            }
-          } catch (e) {
-            console.error("Reverse geocoding failed", e);
-          }
         },
         (error) => {
           if (!isMounted) return;
@@ -106,9 +94,7 @@ export default function Home() {
           setIsDay(data.current.is_day);
         }
 
-        // Only override the display name if we are not doing a coordinate search 
-        // (because coordinate searches have their display name set by the precise OSM reverse-geocoder above)
-        if (data && data.location && !searchLocation.includes(",")) {
+        if (data && data.location) {
           setDisplayLocationName(`${data.location.name}, ${data.location.region}`);
         }
       })
