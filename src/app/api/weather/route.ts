@@ -22,7 +22,7 @@ export async function GET(request: Request) {
         });
         const nomData = await nomRes.json();
         if (nomData && nomData.address) {
-          const localName = nomData.address.suburb || nomData.address.neighbourhood || nomData.address.city_district || nomData.address.city || nomData.address.town || nomData.name;
+          const localName = nomData.address.neighbourhood || nomData.address.suburb || nomData.address.residential || nomData.address.quarter || nomData.address.hamlet || nomData.address.village || nomData.address.city_district || nomData.address.locality || nomData.address.city || nomData.address.town || nomData.name;
           const state = nomData.address.state || nomData.address.country || "";
           overrideLocationName = `${localName}${localName && state ? ', ' : ''}${state}`;
         }
