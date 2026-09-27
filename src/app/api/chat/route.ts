@@ -29,7 +29,7 @@ const weatherTool: FunctionDeclaration = {
 
 export async function POST(request: Request) {
   try {
-    const { message, history = [], aiMode = "manual", locationContext = "" } = await request.json();
+    const { message, history = [], aiMode = "manual", locationContext = "", rawLocation = "" } = await request.json();
 
     let systemInstruction = "";
 
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
     }
 
     if (locationContext) {
-      systemInstruction += `\n\nCRITICAL CONTEXT: The user is currently looking at the weather for: ${locationContext}. If they ask a question without specifying a location, assume they are asking about ${locationContext}.`;
+      systemInstruction += `\n\nCRITICAL CONTEXT: The user is currently looking at the weather for: ${locationContext}. If they ask a question without specifying a location, you MUST assume they are asking about ${locationContext} and you MUST pass the exact string "${rawLocation || locationContext}" to the get_weather tool to guarantee data consistency.`;
     }
 
     // The user's AI model from 2026

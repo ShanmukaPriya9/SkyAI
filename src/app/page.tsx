@@ -114,7 +114,7 @@ export default function Home() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: userMessage, history: chatHistory, aiMode, locationContext: displayLocationName || searchLocation })
+        body: JSON.stringify({ message: userMessage, history: chatHistory, aiMode, locationContext: displayLocationName || searchLocation, rawLocation: searchLocation })
       });
       
       const data = await res.json();
