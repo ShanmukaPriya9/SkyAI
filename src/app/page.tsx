@@ -259,30 +259,22 @@ export default function Home() {
             )}
           </div>
 
-          {isLoggedIn ? (
-            <form onSubmit={handleSendMessage} className="relative mt-auto shrink-0">
-              <input 
-                type="text" 
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                placeholder="Ask anything..." 
-                className="w-full bg-black/40 border border-white/10 rounded-2xl py-3.5 pl-4 pr-12 text-sm text-white focus:outline-none focus:border-blue-500/50 focus:bg-black/60 transition-all shadow-inner"
-              />
-              <button 
-                type="submit"
-                disabled={isTyping}
-                className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:hover:bg-blue-500 rounded-xl transition-all shadow-lg shadow-blue-500/20 active:scale-95"
-              >
-                {isTyping ? <Loader2 className="w-4 h-4 text-white animate-spin" /> : <Send className="w-4 h-4 text-white" />}
-              </button>
-            </form>
-          ) : (
-            <div className="mt-auto shrink-0 relative bg-black/40 border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center">
-               <Lock className="w-5 h-5 text-gray-400 mb-2" />
-               <p className="text-sm text-gray-300 font-medium mb-3">Sign in to unlock SkyAI Chat</p>
-               <a href="/profile" className="text-xs bg-blue-500 hover:bg-blue-600 transition-colors text-white px-4 py-2 rounded-lg font-medium">Sign In / Create Account</a>
-            </div>
-          )}
+          <form onSubmit={handleSendMessage} className="relative mt-auto shrink-0">
+            <input 
+              type="text" 
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Ask anything..." 
+              className="w-full bg-black/40 border border-white/10 rounded-2xl py-3.5 pl-4 pr-12 text-sm text-white focus:outline-none focus:border-blue-500/50 focus:bg-black/60 transition-all shadow-inner"
+            />
+            <button 
+              type="submit"
+              disabled={isTyping}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-blue-500 hover:bg-blue-600 disabled:opacity-50 disabled:hover:bg-blue-500 rounded-xl transition-all shadow-lg shadow-blue-500/20 active:scale-95"
+            >
+              {isTyping ? <Loader2 className="w-4 h-4 text-white animate-spin" /> : <Send className="w-4 h-4 text-white" />}
+            </button>
+          </form>
         </div>
       </div>
 
