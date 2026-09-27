@@ -12,7 +12,7 @@
 
 SkyAI is a full-stack climate analytics dashboard and weather forecasting application built with Next.js. It integrates real-time meteorological data with an advanced conversational AI, allowing users to dynamically switch between specialized meteorological personas for tailored data analysis.
 
-## ✨ Features
+##  Features
 
 * **Live AI Meteorologist:** Features a conversational interface powered by the **Google Gemini API**. The AI engine utilizes dynamic system instructions managed via global state, allowing the user to seamlessly toggle between four distinct analytical modes: *Casual Assistant*, *Professional Meteorologist*, *Agricultural Analyst*, and *Travel Advisor*.
 * **Dynamic Video Environments:** The dashboard features a completely custom dynamic video background engine that maps strict daytime and nighttime weather codes to beautiful, locally hosted `.mp4` background loops in real-time.
@@ -21,12 +21,12 @@ SkyAI is a full-stack climate analytics dashboard and weather forecasting applic
 * **Persistent Authentication Architecture:** Secures premium application routes (such as the WebGL Map and Climate graphs) using a custom localStorage-backed authentication engine, fully supporting dynamic user names globally.
 * **Dynamic UI & Global State:** Built with a clean glassmorphism design system utilizing Tailwind CSS. Leverages native React Context API for global state management, instantly cascading user preferences (such as Celsius/Fahrenheit and Metric/Imperial toggles) throughout the application DOM.
 
-## 🚀 Live Demo
+##  Live Demo
 
 You can interact with the live application deployed on Vercel here:  
-👉 **[https://sky-ai-virid.vercel.app](https://sky-ai-virid.vercel.app)**
+--> **[https://sky-ai-virid.vercel.app](https://sky-ai-virid.vercel.app)**
 
-## 🛠️ Technology Stack
+##  Technology Stack
 
 * **Frontend Framework:** React 18, Next.js 14 (App Router)
 * **Styling:** Tailwind CSS, Lucide-React Icons
@@ -36,7 +36,7 @@ You can interact with the live application deployed on Vercel here:
   * Google Gemini (Conversational AI Function Calling)
   * OpenStreetMap Nominatim (Reverse Geocoding)
 
-## 💻 Installation & Setup
+##  Installation & Setup
 
 To run this project locally, clone the repository and install the dependencies:
 
