@@ -13,6 +13,24 @@ export async function GET(request: Request) {
   }
 
   try {
+    let overrideLocationName = null;
+    if (location.includes(",")) {
+      try {
+        const [lat, lon] = location.split(",");
+        const nomRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&accept-language=en`, {
+          headers: { "User-Agent": "SkyAI-WeatherApp/1.0" }
+        });
+        const nomData = await nomRes.json();
+        if (nomData && nomData.address) {
+          const city = nomData.address.city || nomData.address.town || nomData.address.village || nomData.address.municipality || nomData.address.suburb || nomData.address.county || nomData.name;
+          const state = nomData.address.state || nomData.address.country || "";
+          overrideLocationName = `${city}${city && state ? ', ' : ''}${state}`;
+        }
+      } catch (e) {
+        console.error("Server-side Nominatim failed:", e);
+      }
+    }
+
     const response = await fetch(
       `${BASE_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${location}&days=${days}&aqi=yes&alerts=yes`
     );
@@ -22,6 +40,11 @@ export async function GET(request: Request) {
     }
 
     const data = await response.json();
+    
+    if (overrideLocationName && data.location) {
+      data.location.precise_name = overrideLocationName;
+    }
+
     return NextResponse.json(data);
   } catch (error) {
     return NextResponse.json({ error: "Failed to fetch weather data" }, { status: 500 });

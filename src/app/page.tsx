@@ -95,7 +95,7 @@ export default function Home() {
         }
 
         if (data && data.location) {
-          setDisplayLocationName(`${data.location.name}, ${data.location.region}`);
+          setDisplayLocationName(data.location.precise_name || `${data.location.name}, ${data.location.region}`);
         }
       })
       .catch(err => console.error("Error fetching weather:", err));
