@@ -29,7 +29,7 @@ const weatherTool: FunctionDeclaration = {
 
 export async function POST(request: Request) {
   try {
-    const { message, history = [], aiMode = "manual" } = await request.json();
+    const { message, history = [], aiMode = "manual", locationContext = "" } = await request.json();
 
     let systemInstruction = "";
 
@@ -47,6 +47,10 @@ export async function POST(request: Request) {
       default:
         systemInstruction = "You are SkyAI, an expert conversational weather assistant. When asked about the weather, ALWAYS use the get_weather tool. You MUST format your response beautifully. Use emojis. Keep paragraphs very short (1-2 sentences). Use bullet points for forecasts. End with a clearly separated 'Recommendation' section. Do not give giant blocks of plain text.";
         break;
+    }
+
+    if (locationContext) {
+      systemInstruction += `\n\nCRITICAL CONTEXT: The user is currently looking at the weather for: ${locationContext}. If they ask a question without specifying a location, assume they are asking about ${locationContext}.`;
     }
 
     // The user's AI model from 2026
