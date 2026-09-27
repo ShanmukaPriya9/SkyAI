@@ -17,9 +17,9 @@ export default function ProfilePage() {
             const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&accept-language=en`);
             const data = await res.json();
             if (data && data.address) {
-              const city = data.address.city || data.address.town || data.address.village || data.address.municipality || data.address.suburb || data.address.county || "";
+              const localName = data.address.suburb || data.address.neighbourhood || data.address.city_district || data.address.city || data.address.town || data.name || "";
               const state = data.address.state || data.address.country || "";
-              const formattedLocation = `${city}${city && state ? ', ' : ''}${state}`;
+              const formattedLocation = `${localName}${localName && state ? ', ' : ''}${state}`;
               setLocation(formattedLocation || "New York");
             } else {
               setLocation("New York");

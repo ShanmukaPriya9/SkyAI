@@ -22,9 +22,9 @@ export async function GET(request: Request) {
         });
         const nomData = await nomRes.json();
         if (nomData && nomData.address) {
-          const city = nomData.address.city || nomData.address.town || nomData.address.village || nomData.address.municipality || nomData.address.suburb || nomData.address.county || nomData.name;
+          const localName = nomData.address.suburb || nomData.address.neighbourhood || nomData.address.city_district || nomData.address.city || nomData.address.town || nomData.name;
           const state = nomData.address.state || nomData.address.country || "";
-          overrideLocationName = `${city}${city && state ? ', ' : ''}${state}`;
+          overrideLocationName = `${localName}${localName && state ? ', ' : ''}${state}`;
         }
       } catch (e) {
         console.error("Server-side Nominatim failed:", e);
