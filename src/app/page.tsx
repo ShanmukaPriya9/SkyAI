@@ -14,6 +14,7 @@ export default function Home() {
   const [weatherData, setWeatherData] = useState<any>(null);
   const [searchLocation, setSearchLocation] = useState("");
   const [displayLocationName, setDisplayLocationName] = useState("");
+  const [locationError, setLocationError] = useState("");
   
   // Autocomplete state
   const [searchQuery, setSearchQuery] = useState("");
@@ -22,9 +23,19 @@ export default function Home() {
 
   // Auto-detect user location on load
   useEffect(() => {
+    let isMounted = true;
+    const timeoutId = setTimeout(() => {
+      if (isMounted) {
+        setLocationError("Taking longer than expected...\nYou can search for a location manually.");
+      }
+    }, 8000);
+
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(
         async (position) => {
+          if (!isMounted) return;
+          clearTimeout(timeoutId);
+          setLocationError("");
           const { latitude, longitude } = position.coords;
           setSearchLocation(`${latitude},${longitude}`);
 
@@ -41,14 +52,22 @@ export default function Home() {
           }
         },
         (error) => {
-          console.warn("Geolocation blocked or failed. Using fallback.", error);
-          setSearchLocation("New York"); // Fallback
+          if (!isMounted) return;
+          clearTimeout(timeoutId);
+          console.warn("Geolocation blocked or failed.", error);
+          setLocationError("📍 We couldn't access your location.\nEnter a city manually to see your weather.");
         },
         { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
       );
     } else {
-      setSearchLocation("New York");
+      clearTimeout(timeoutId);
+      setLocationError("📍 We couldn't access your location.\nEnter a city manually to see your weather.");
     }
+    
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   // Debounced search autocomplete
@@ -136,7 +155,7 @@ export default function Home() {
       <header className="relative z-50 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0 glass-panel rounded-3xl p-4 px-6 md:px-8">
         <div className="flex items-center gap-3 text-gray-200">
           <MapPin className="w-5 h-5 text-blue-400 animate-pulse shrink-0" />
-          <span className="font-medium text-lg tracking-wide truncate max-w-[200px] md:max-w-none">{weatherData ? displayLocationName : 'Loading...'}</span>
+          <span className="font-medium text-lg tracking-wide truncate max-w-[200px] md:max-w-none">{weatherData ? displayLocationName : (locationError ? 'Location Required' : 'Detecting Location...')}</span>
         </div>
         <div className="relative w-full md:w-72 z-50">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -198,6 +217,12 @@ export default function Home() {
                   <span className="text-2xl lg:text-3xl font-light text-gray-200">{weatherData.current.condition.text}</span>
                   <span className="text-sm text-gray-400">Feels like {temperatureUnit === 'fahrenheit' ? Math.round(weatherData.current.feelslike_f) : Math.round(weatherData.current.feelslike_c)}°</span>
                 </div>
+              </div>
+            ) : !searchLocation && locationError ? (
+              <div className="h-32 flex flex-col justify-center gap-2">
+                {locationError.split('\n').map((line, i) => (
+                  <p key={i} className={`text-gray-300 ${i === 0 ? 'font-medium' : 'text-sm'}`}>{line}</p>
+                ))}
               </div>
             ) : (
               <div className="h-32 flex items-center"><Loader2 className="w-8 h-8 animate-spin text-white/50" /></div>
