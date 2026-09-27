@@ -77,8 +77,15 @@ export async function POST(request: Request) {
       const weatherRes = await fetch(`${BASE_URL}/forecast.json?key=${WEATHER_API_KEY}&q=${location}&days=3&aqi=yes&alerts=yes`);
       const weatherData = await weatherRes.json();
 
+      // Overwrite the WeatherAPI nearest-station name with the user's exact location context 
+      // to prevent the AI from quoting a weather station in another city/state
+      if (weatherData && weatherData.location) {
+        weatherData.location.name = locationContext || location;
+        weatherData.location.region = "";
+      }
+
       // Send the weather data back to Gemini as a system/user context string to bypass the strict role constraint
-      result = await chat.sendMessage(`[System Context]: The weather tool returned this data for ${location}:\n${JSON.stringify(weatherData)}`);
+      result = await chat.sendMessage(`[System Context]: The weather tool returned this data for ${locationContext || location}:\n${JSON.stringify(weatherData)}`);
       response = result.response;
     }
 
